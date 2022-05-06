@@ -1,0 +1,28 @@
+<br>
+<div class="container form-inline">
+    <button type="button" class="btn btn-primary" style="margin: 1%;">Ver mis datos</button>
+    <button type="button" class="btn btn-primary" style="margin: 1%;">Editar mis datos</button>
+</div>
+<div class="container">
+    <div class="container">
+        <div class="row" style="margin: 3%;">
+            <button class="btn btn-primary col align-self-end">Regresar</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3" *ngFor="let semestre of semestres">
+                <div class="drag-container">
+                    <div class="section-heading">
+                        Semestre {{semestre.id}}
+                    </div>
+                    <div class="item-list">
+                        <div class="item-box" *ngFor="let materia of semestre.listaSemestre">
+                            {{materia}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

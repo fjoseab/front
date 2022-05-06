@@ -1,0 +1,570 @@
+<!--Tabla MAIN-->
+<div class="container">
+    <button class="btn btn-primary" 
+        style="margin: 2%;"    
+        data-toggle="modal" 
+        data-target="#frmCrear"
+        data-placement="top" 
+        title="Nuevo alumno">
+        <h5>Nuevo alumno</h5> 
+        <i class="material-icons">
+            person_add
+        </i>
+    </button>
+    <form [formGroup]="filtradoForm" class="form-inline">
+        
+        <div class="form-group">
+            <input id="entradaBusqueda" class="form-control" placeholder="Buscar" type="text" formControlName="buscado" />
+        </div>
+        
+        <div class="form-group" style="margin: 1%;">
+            <select class="form-control" formControlName="filtrarPor" id="sangre">
+                <option value="1">Núm. Control</option>
+                <option value="2">Nombre</option>
+                <option value="3">Sexo</option>
+            </select>
+        </div>
+        
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" (click)="filtrar()">Filtrar</button>
+
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" (click)="getsAlumnos()" style="margin: 1%;">Limpiar</button>
+
+    </form>
+    <div *ngIf="alumnos">
+        <table class="table table-striped mat-elevation-z8">
+            <thead>
+                <tr class="thead-dark">
+                    <th style="text-align: center;">Num. Control</th>
+                    <th style="text-align: center;">Estatus</th>
+                    <th style="text-align: center;">Nombre</th>
+                    <th style="text-align: center;">Primer Ap.</th>
+                    <th style="text-align: center;">Segundo Ap.</th>
+                    <th style="text-align: center;">Sexo</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let alu of alumnos">
+                    <td style="text-align: center;">{{alu.noControl}}</td>
+                    <td style="text-align: center;" *ngIf="alu.estatus == 0">Baja definitiva</td>
+                    <td style="text-align: center;" *ngIf="alu.estatus == 1">Activo</td>
+                    <td style="text-align: center;" *ngIf="alu.estatus == 2">Baja temporal</td>
+                    <td style="text-align: center;" *ngIf="alu.estatus == 3">Egresado</td>
+                    <td style="text-align: center;">{{alu.nombre}}</td>
+                    <td style="text-align: center;">{{alu.primerApellido}}</td>
+                    <td style="text-align: center;">{{alu.segundoApellido}}</td>
+                    <td style="text-align: center;">{{alu.sexo}}</td>
+                    <td class="fa-align-center" style="text-align: center;">
+                        <button class="btn btn-light" 
+                                style="margin: 2%;"
+                                (click)="getAlumnoEspecifico(alu.idAlumno)" 
+                                data-toggle="modal" 
+                                data-target="#frmVer"
+                                data-placement="top" 
+                                title="Ver Completo">
+                            <i class="material-icons">
+                                visibility
+                            </i>
+                        </button>
+                        <button class="btn btn-warning" 
+                                style="margin: 2%;" 
+                                (click)="getAlumnoEspecifico(alu.idAlumno)"
+                                data-toggle="modal" 
+                                data-target="#frmEditar" 
+                                data-placement="top" 
+                                title="Editar">
+                            <i class="material-icons">
+                                create
+                            </i>
+                        </button>
+                        <button class="btn btn-danger" 
+                                style="margin: 2%;"
+                                (click)="getAlumnoEspecifico(alu.idAlumno)" 
+                                data-toggle="modal" 
+                                data-target="#frmEstatus"
+                                data-placement="top" 
+                                title="Estado del alumno">
+                            <i class="material-icons">
+                                delete
+                            </i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Ventanas Modal Ver Alumno -->
+<div class="modal fade mb-lg" id="frmVer" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Datos del Alumnos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        Cerrar
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <form> -->
+                    <!-- tabla de alumnos -->
+                    <div class="form-group">
+                        <label>Nombre(s):</label>
+                        <br>
+                        <label >{{alumnoDTO.alumno.nombre}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Paterno:</label>
+                        <br>
+                        <label>{{alumnoDTO.alumno.primerApellido}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Materno</label>
+                        <br>
+                        <label>{{alumnoDTO.alumno.segundoApellido}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo:</label>
+                        <br>
+                        <label>{{alumnoDTO.alumno.sexo}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de nacimiento: </label>
+                        <br>
+                        <label>{{alumnoDTO.alumno.fechaNacimiento}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Sangre:</label>
+                        <br>
+                        <label>{{alumnoDTO.alumno.tipoSangre}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Curp:</label>
+                        <br>
+                        <label>{{alumnoDTO.alumno.curp}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Servicio medico:</label>
+                        <br>
+                        <label>{{alumnoDTO.alumno.servicioMedico}}</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.email}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Código postal:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.codigoPostal}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Entidad:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.entidadFederativa}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Municipio:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.municipio}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Colonia:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.colonia}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Calle:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.calle}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Numero exterior:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.numeroExterior}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Número interior:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.numeroInterior}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Ayuda direccion:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.ayudaDirecion}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.numeroTelefono}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono secundario:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.numeroTelefonoSecundario}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Tutor:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.tutor}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono tutor:</label>
+                        <br>
+                        <label>{{alumnoDTO.contacto.telefonoTutor}}</label>
+                    </div>
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ventanas Modal Editar Alumno -->
+<div class="modal fade mb-lg" id="frmEditar" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo Alumno</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                    <span aria-hidden="true">
+                        Cancelar
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (submit)="ActualizarAlumno()" [formGroup]="registerForm">
+                    <div class="form-group">
+                        <label>Nombre(s):</label>
+                        <input type="text" formControlName="Nombre" class="form-control" id="nombre" placeholder="Ingrese nombre(s)" value="{{alumnoDTO.alumno.nombre}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Paterno:</label>
+                        <input type="text" formControlName="PrimerApellido" class="form-control" id="ap" placeholder="Ingrese Apellido Paterno" value="{{alumnoDTO.alumno.primerApellido}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Materno:</label>
+                        <input type="text" formControlName="SegundoApellido" class="form-control" id="am" placeholder="Ingrese Apellido Materno" value="{{alumnoDTO.alumno.segundoApellido}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo:</label>
+                        <select  class="form-control" formControlName="Sexo" id="sexo" value="{{alumnoDTO.alumno.sexo}}">
+                            <option value="H">H</option>
+                            <option value="M">M</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de nacimiento: </label>
+                        <input type="datetime-local" formControlName="FechaNacimiento" name="fecha" id="fecha" step="1" min="1960-01-01" max="2050-12-31" value="{{alumnoDTO.alumno.fechaNacimiento}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sangre:</label>
+                        <select class="form-control" formControlName="TipoSangre" id="sangre" value="{{alumnoDTO.alumno.tipoSangre}}" >
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB+">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="form-group" >
+                        <label>Curp:</label>
+                        <input type="text" formControlName="Curp" class="form-control" id="curp" placeholder="Ingrese curp" required value="{{alumnoDTO.alumno.curp}}">
+                    </div>
+                    <div class="form-group" >
+                        <label>Servicio medico:</label>
+                        <input type="text" formControlName="ServicioMedico" class="form-control" id="sm" placeholder="Ingrese" required value="{{alumnoDTO.alumno.servicioMedico}}" >
+                    </div>
+                    <div class="form-group">
+                        <label>Correo:</label>
+                        <input type="email" formControlName="Email" class="form-control" id="correo" placeholder="Ingrese" 
+                            pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required value="{{alumnoDTO.contacto.email}}">
+                    </div>
+                    <div class="form-group" >
+                        <label>Código postal:</label>
+                        <input type="number" formControlName="CodigoPostal" class="form-control" id="cp" required value="{{alumnoDTO.contacto.codigoPostal}}">
+                    </div>
+                    <div class="form-group">
+                        <label>Entidad:</label>
+                        <select class="form-control" formControlName="EntidadFederativa" id="estado" value="{{alumnoDTO.contacto.entidadFederativa}}">
+                            <option value="Aguascalientes">Aguascalientes</option>
+                            <option value="Baja California">Baja California</option>
+                            <option value="Baja California Sur">Baja California Sur</option>
+                            <option value="Campeche">Campeche</option>
+                            <option value="Chiapas">Chiapas</option>
+                            <option value="Chihuahua">Chihuahua</option>
+                            <option value="Coahuila">Coahuila</option>
+                            <option value="Colima">Colima</option>
+                            <option value="Distrito Federal">Distrito Federal</option>
+                            <option value="Durango">Durango</option>
+                            <option value="Estado de México">Estado de México</option>
+                            <option value="Guanajuato">Guanajuato</option>
+                            <option value="Guerrero">Guerrero</option>
+                            <option value="Hidalgo">Hidalgo</option>
+                            <option value="Jalisco">Jalisco</option>
+                            <option value="Michoacán">Michoacán</option>
+                            <option value="Morelos">Morelos</option>
+                            <option value="Nayarit">Nayarit</option>
+                            <option value="Nuevo León">Nuevo León</option>
+                            <option value="Oaxaca">Oaxaca</option>
+                            <option value="Puebla">Puebla</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Quintana Roo">Quintana Roo</option>
+                            <option value="San Luis Potosí">San Luis Potosí</option>
+                            <option value="Sinaloa">Sinaloa</option>
+                            <option value="Sonora">Sonora</option>
+                            <option value="Tabasco">Tabasco</option>
+                            <option value="Tamaulipas">Tamaulipas</option>
+                            <option value="Tlaxcala">Tlaxcala</option>
+                            <option value="Veracruz">Veracruz</option>
+                            <option value="Yucatán">Yucatán</option>
+                            <option value="Zacatecas">Zacatecas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Municipio:</label>
+                        <input type="text" class="form-control" formControlName="Municipio" id="municipio" placeholder="Ingrese municipio" value="{{alumnoDTO.contacto.municipio}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Colonia:</label>
+                        <input type="text" class="form-control" formControlName="Colonia" id="colonia" placeholder="Ingrese colonia" value="{{alumnoDTO.contacto.colonia}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Calle:</label>
+                        <input type="text" class="form-control" formControlName="Calle" id="calle" placeholder="Ingrese calle" value="{{alumnoDTO.contacto.calle}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Numero exterior:</label>
+                        <input type="text" formControlName="NumeroExterior" class="form-control" id="ne" placeholder="0" value="{{alumnoDTO.contacto.numeroExterior}}">
+                    </div>
+                    <div class="form-group">
+                        <label>Número interior:</label>
+                        <input type="text" formControlName="NumeroInterior" class="form-control" id="ni" placeholder="0" value="{{alumnoDTO.contacto.numeroInterior}}">
+                    </div>
+                    <div class="form-group">
+                        <label>Ayuda direccion:</label>
+                        <input type="text" formControlName="AyudaDireccion" class="form-control" id="ni" placeholder="Ayudenos a encontrar su casa" value="{{alumnoDTO.contacto.ayudaDirecion}}">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono:</label>
+                        <input type="number" formControlName="NumeroTelefono" class="form-control" id="tf" value="{{alumnoDTO.contacto.numeroTelefono}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono secundario:</label>
+                        <input type="number" formControlName="NumeroTelefonoSecundario" class="form-control" id="tfs" value="{{alumnoDTO.contacto.numeroTelefonoSecundario}}">
+                    </div>
+                    <div class="form-group">
+                        <label>Tutor:</label>
+                        <input type="text" formControlName="Tutor" class="form-control" id="tut" placeholder="Nombre" value="{{alumnoDTO.contacto.tutor}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono tutor:</label>
+                        <input type="number" formControlName="TelefonoTutor" class="form-control" id="tft" value="{{alumnoDTO.contacto.telefonoTutor}}">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary gra" onclick="$('.modal').modal('hide')">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ventanas Modal Cambiar Estatus -->
+<div class="modal fade mb-lg" id="frmEstatus" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Estado del Alumnos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        Cancelar
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="actualizarEstadoAlumno()">
+                    <div class="form-group">
+                        <label>{{alumnoDTO.alumno.nombre}} {{alumnoDTO.alumno.primerApellido}}
+                            {{alumnoDTO.alumno.segundoApellido}}</label>
+                        <label>Estado:</label>
+                        <select class="form-control" [value]='1' id="estadoFromModalEstado">
+                            <option (click)="seleccion(1)" value="1">Activo</option>
+                            <option (click)="seleccion(2)" value="2">Baja tempora</option>
+                            <option (click)="seleccion(0)" value="0">Baja definitiva</option>
+                            <option (click)="seleccion(3)" value="3">Egresado</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <label class="btn btn-danger" onclick="actualizarEstadoAlumno()" onclick="$('.modal').modal('hide')">Actualizar estado</label> -->
+                        <button type="button" class="btn btn-danger" (click)="actualizarEstadoAlumno()" onclick="$('.modal').modal('hide')">
+                            Actualizar estado
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ventanas Modal Crear Alumno -->
+<div class="modal fade mb-lg" id="frmCrear" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo Alumno</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                    <span aria-hidden="true">
+                        Cancelar
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (submit)="NuevoAlumno()" [formGroup]="registerForm">
+                    <div class="form-group">
+                        <label>Nombre(s):</label>
+                        <input type="text" formControlName="Nombre" class="form-control" placeholder="Ingrese nombre(s)"required>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Paterno:</label>
+                        <input type="text" formControlName="PrimerApellido" class="form-control" placeholder="Ingrese Apellido Paterno" name="ap" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Materno:</label>
+                        <input type="text" formControlName="SegundoApellido" class="form-control" placeholder="Ingrese Apellido Materno" name="am" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo:</label>
+                        <select  class="form-control" formControlName="Sexo" >
+                            <option value="H">H</option>
+                            <option value="M">M</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de nacimiento: </label>
+                        <input type="date" formControlName="FechaNacimiento" step="1" min="1960-01-01" max="2050-12-31" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sangre:</label>
+                        <select class="form-control" formControlName="TipoSangre" name="sangre">
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB+">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="form-group" >
+                        <label>Curp:</label>
+                        <input type="text" formControlName="Curp" class="form-control" placeholder="Ingrese curp" required>
+                    </div>
+                    <div class="form-group" >
+                        <label>Servicio medico:</label>
+                        <input type="text" formControlName="ServicioMedico" class="form-control" placeholder="Ingrese" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo:</label>
+                        <input type="email" formControlName="Email" class="form-control" placeholder="Ingrese" 
+                            pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
+                    </div>
+                    <div class="form-group" >
+                        <label>Código postal:</label>
+                        <input type="number" formControlName="CodigoPostal" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Entidad:</label>
+                        <select class="form-control" formControlName="EntidadFederativa">
+                            <option value="Aguascalientes">Aguascalientes</option>
+                            <option value="Baja California">Baja California</option>
+                            <option value="Baja California Sur">Baja California Sur</option>
+                            <option value="Campeche">Campeche</option>
+                            <option value="Chiapas">Chiapas</option>
+                            <option value="Chihuahua">Chihuahua</option>
+                            <option value="Coahuila">Coahuila</option>
+                            <option value="Colima">Colima</option>
+                            <option value="Distrito Federal">Distrito Federal</option>
+                            <option value="Durango">Durango</option>
+                            <option value="Estado de México">Estado de México</option>
+                            <option value="Guanajuato">Guanajuato</option>
+                            <option value="Guerrero">Guerrero</option>
+                            <option value="Hidalgo">Hidalgo</option>
+                            <option value="Jalisco">Jalisco</option>
+                            <option value="Michoacán">Michoacán</option>
+                            <option value="Morelos">Morelos</option>
+                            <option value="Nayarit">Nayarit</option>
+                            <option value="Nuevo León">Nuevo León</option>
+                            <option value="Oaxaca">Oaxaca</option>
+                            <option value="Puebla">Puebla</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Quintana Roo">Quintana Roo</option>
+                            <option value="San Luis Potosí">San Luis Potosí</option>
+                            <option value="Sinaloa">Sinaloa</option>
+                            <option value="Sonora">Sonora</option>
+                            <option value="Tabasco">Tabasco</option>
+                            <option value="Tamaulipas">Tamaulipas</option>
+                            <option value="Tlaxcala">Tlaxcala</option>
+                            <option value="Veracruz">Veracruz</option>
+                            <option value="Yucatán">Yucatán</option>
+                            <option value="Zacatecas">Zacatecas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Municipio:</label>
+                        <input type="text" class="form-control" formControlName="Municipio" placeholder="Ingrese municipio" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Colonia:</label>
+                        <input type="text" class="form-control" formControlName="Colonia" placeholder="Ingrese colonia" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Calle:</label>
+                        <input type="text" class="form-control" formControlName="Calle" placeholder="Ingrese calle"required>
+                    </div>
+                    <div class="form-group">
+                        <label>Numero exterior:</label>
+                        <input type="text" formControlName="NumeroExterior" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Número interior:</label>
+                        <input type="text" formControlName="NumeroInterior" class="form-control">
+                    </div>
+                    <div class="form-group">
+                            <label>Ayuda direccion:</label>
+                            <input type="text" formControlName="AyudaDireccion" class="form-control" placeholder="Ayudenos a encotra su casa">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono:</label>
+                        <input type="number" formControlName="NumeroTelefono" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono secundario:</label>
+                        <input type="number" formControlName="NumeroTelefonoSecundario" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Tutor:</label>
+                        <input type="text" formControlName="Tutor" class="form-control" placeholder="Nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Telefono tutor:</label>
+                        <input type="number" formControlName="TelefonoTutor" class="form-control">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary gra" onclick="$('.modal').modal('hide')" >Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

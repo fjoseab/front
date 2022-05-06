@@ -1,0 +1,33 @@
+<div class="container" style="background: inherit;">
+    <div class="card" style="background: inherit;">
+        <article class="card-body" style="background: inherit;">
+            <h4 class="card-title mb-4 mt-1">Iniciar Sesión</h4>
+            <form [formGroup]="formInicio" action="">
+
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input id="entradaUsuario" class="form-control" placeholder="Usuario" type="text"
+                        formControlName="usuario" />
+                    <span style="color: red;"
+                        *ngIf="formInicio.controls['usuario'].touched && formInicio.controls['usuario'].errors?.required">Es
+                        requerido</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input id="entradaContrasena" class="form-control" placeholder="******" type="password"
+                        formControlName="contrasena" />
+                    <span style="color: red;"
+                        *ngIf="formInicio.controls['contrasena'].touched && formInicio.controls['contrasena'].errors?.required">Es
+                        requerido</span>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" (click)="LogIn()" [disabled]="formInicio.invalid"> Iniciar
+                    </button>
+                </div>
+
+            </form>
+        </article>
+    </div>
+</div>

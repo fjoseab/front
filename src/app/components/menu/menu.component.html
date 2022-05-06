@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">ITSJ</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+        *ngIf="accsesLevel == '2' || accsesLevel == '1' ">
+         <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="accsesLevel == '1' ">
+        <ul class="navbar-nav mr-auto">
+            
+        </ul>
+        <ul class="form-inline my-lg-0">
+            <li>
+                <button class="btn btn-danger" (click)="Finalizar()" routerLink="login">Cerrar Sesion</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="accsesLevel == '2' ">
+        <ul class="navbar-nav mr-auto">
+            <li>
+                <a class="nav-link" routerLink="principal" routerLinkActive="active">Principal</a>
+            </li>
+            <li>
+                <a class="nav-link" routerLink="alumnos" routerLinkActive="active">Alumno</a>
+            </li>
+            <li>
+                <a class="nav-link" routerLink="Academica" routerLinkActive="active">Materia</a>
+            </li>
+        </ul>
+        <ul class="form-inline my-lg-0">
+            <li>
+                <button class="btn btn-danger" (click)="Finalizar()" routerLink="login">Cerrar Sesion</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="accsesLevel == '7' ">
+        <ul class="navbar-nav mr-auto">
+        </ul> 
+    </div>
+
+</nav>

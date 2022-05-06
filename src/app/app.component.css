@@ -1,0 +1,26 @@
+.botonD{
+    width:30px;
+    height:30px;
+    background-color:black;
+    margin: 5px;
+    padding:10px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+  }
+
+.botonL{
+    width:30px;
+    height:30px;
+    background-color:white;
+    margin: 5px;
+    padding:10px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+}
+
+.centro {
+    display: flex;
+    justify-content: center;
+  }

@@ -1,0 +1,11 @@
+<body style="background: inherit; color: inherit;">
+    <div style="background: inherit;">
+        <app-menu></app-menu>
+        <router-outlet></router-outlet>
+        <app-piepagina></app-piepagina>
+        <div class="centro">
+            <button mat-raised-button (click)="onSetTheme('dark-theme')" class="botonD"></button>
+            <button mat-raised-button (click)="onSetTheme('light-theme')" class="botonL"></button>
+        </div>
+    </div>
+</body>

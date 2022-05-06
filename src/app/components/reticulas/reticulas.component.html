@@ -1,0 +1,69 @@
+<br>
+<!--Tabla MAIN-->
+<div *ngIf="visible">
+    <div class="container">
+        <div *ngIf="alumnos">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="thead-dark">
+                        <th style="text-align: center;">Num. Control</th>
+                        <th style="text-align: center;">Estatus</th>
+                        <th style="text-align: center;">Nombre</th>
+                        <th style="text-align: center;">Primer Ap.</th>
+                        <th style="text-align: center;">Segundo Ap.</th>
+                        <th style="text-align: center;">Sexo</th>
+                        <th style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let alumno of alumnos">
+                        <td>{{alumno.noControl}}</td>
+                        <td *ngIf="alumno.estatus == 0">Baja definitiva</td>
+                        <td *ngIf="alumno.estatus == 1">Activo</td>
+                        <td *ngIf="alumno.estatus == 2">Baja temporal</td>
+                        <td *ngIf="alumno.estatus == 3">Egresado</td>
+                        <td>{{alumno.nombre}}</td>
+                        <td>{{alumno.primerApellido}}</td>
+                        <td>{{alumno.segundoApellido}}</td>
+                        <td>{{alumno.sexo}}</td>
+                        <td class="fa-align-center" style="text-align: center;">
+                            <button class="btn btn-primary" style="margin: 2%;" (click)="getReticula(alumno.noControl)"
+                                data-toggle="modal" data-target="#frmReticula" data-placement="top"
+                                title="Modificar Carga">
+                                <i class="material-icons">
+                                    list_alt
+                                </i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Tabla carga -->
+<div *ngIf="!visible">
+    <div class="container">
+        <div class="row" style="margin: 3%;">
+            <button class="btn btn-primary col align-self-end" (click)="visible = true">Regresar</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3" *ngFor="let semestre of semestres">
+                <div class="drag-container">
+                    <div class="section-heading">
+                        Semestre {{semestre.id}}
+                    </div>
+                    <div cdkDropList id="{{semestre.id}}" [cdkDropListData]="semestre.listaSemestre"
+                        [cdkDropListConnectedTo]="connectedTo" class="item-list" (cdkDropListDropped)="drop($event)">
+                        <div class="item-box" *ngFor="let materia of semestre.listaSemestre" cdkDrag>
+                            {{materia}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

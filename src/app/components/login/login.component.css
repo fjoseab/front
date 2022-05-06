@@ -1,0 +1,13 @@
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: #1B396A;
+    border-color: #1B396A;
+}
+.btn.disabled, .btn:disabled {
+    opacity: .40;
+}
+.btn-primary {
+    color: #fff;
+    background-color:  #1B396A;
+    border-color:  #1B396A;
+}

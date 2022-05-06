@@ -1,0 +1,27 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$odoo-app-light-primary: mat-palette($mat-indigo);
+$odoo-app-light-accent:  mat-palette($mat-pink, A200, A100, A400);
+$odoo-app-light-warn:    mat-palette($mat-deep-orange);
+
+$odoo-app-dark-primary: mat-palette($mat-blue);
+$odoo-app-dark-accent:  mat-palette($mat-amber, A200, A100, A400);
+$odoo-app-dark-warn:    mat-palette($mat-deep-orange);
+
+$odoo-app-light-theme: mat-light-theme($odoo-app-light-primary, $odoo-app-light-accent, $odoo-app-light-warn);
+$odoo-app-dark-theme: mat-light-theme($odoo-app-dark-primary, $odoo-app-dark-accent, $odoo-app-dark-warn);
+
+@include angular-material-theme($odoo-app-light-theme);
+
+.light-theme{
+    @include angular-material-theme($odoo-app-light-theme);
+    background: #ffffff;
+    color: #000000;
+}
+
+.dark-theme{
+    @include angular-material-theme($odoo-app-dark-theme);
+    background: #201f1f;
+    color: #ffffff;
+}
